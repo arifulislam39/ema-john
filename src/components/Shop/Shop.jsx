@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { addToDb, getShoppingCart } from '../../utilities/fakedb';
+import { addToDb, deleteShoppingCart, getShoppingCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
+import { Link, NavLink } from 'react-router-dom';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -43,7 +44,7 @@ const Shop = () => {
     }, [products])
 
     const handleAddToCart = (product) => {
-        let newCart=[];
+        let newCart = [];
         // const newCart = [...cart, product]
         //if product doesn't exists in the cart,then set quantity =1;
         //if exist update quantity by 1;
@@ -54,8 +55,8 @@ const Shop = () => {
         }
         else {
             exists.quantity = exists.quantity + 1;
-            const remaining = cart.filter(pd=>pd.id !==product.id);
-            newCart=[...remaining, exists];
+            const remaining = cart.filter(pd => pd.id !== product.id);
+            newCart = [...remaining, exists];
         }
 
 
@@ -64,7 +65,7 @@ const Shop = () => {
         addToDb(product.id);
     }
 
-    const handleClearCart=()=>{
+    const handleClearCart = () => {
         setCart([]);
         deleteShoppingCart();
     }
@@ -83,10 +84,15 @@ const Shop = () => {
 
             </div>
             <div className="cart-container">
-                <Cart 
-                cart={cart}
-                handleClearCart={handleClearCart}
-                ></Cart>
+                <Cart
+                    cart={cart}
+                    handleClearCart={handleClearCart}
+                >
+                    <Link to="/order">
+                        <button className='btn-proceed'>Review Order</button>
+                    </Link>
+
+                </Cart>
             </div>
 
         </div>
